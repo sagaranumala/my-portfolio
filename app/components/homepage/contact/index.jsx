@@ -8,6 +8,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { IoLogoGithub, IoMdCall } from "react-icons/io";
 import { MdAlternateEmail } from "react-icons/md";
 import ContactForm from './contact-form';
+import { AiOutlineHome } from "react-icons/ai";
 
 function ContactSection() {
   return (
@@ -27,8 +28,14 @@ function ContactSection() {
                 className="bg-[#8b98a5] p-2 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
                 size={36}
               />
-              <span>{personalData.email}</span>
+              <Link
+                href={`mailto:${personalData.email}`}
+                className="hover:text-[#16f2b3] transition-all duration-300 underline underline-offset-4"
+              >
+                {personalData.email}
+              </Link>
             </p>
+
             <p className="text-sm md:text-xl flex items-center gap-3">
               <IoMdCall
                 className="bg-[#8b98a5] p-2 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
@@ -38,15 +45,27 @@ function ContactSection() {
                 {personalData.phone}
               </span>
             </p>
-            <p className="text-sm md:text-xl flex items-center gap-3">
-              <CiLocationOn
-                className="bg-[#8b98a5] p-2 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
-                size={36}
-              />
-              <span>
-                {personalData.address}
+            <p className="text-sm md:text-xl flex flex-col gap-3">
+              <span className="flex items-center gap-3">
+                <CiLocationOn
+                  className="bg-[#16f2b3] p-2 rounded-full text-white" // Highlight current location
+                  size={36}
+                />
+                <span className="text-[#16f2b3] font-semibold">
+                  {personalData.currentAddress}
+                </span>
               </span>
             </p>
+            <p className="text-sm md:text-xl flex flex-col gap-3">
+              <span className="flex items-center gap-3">
+                <AiOutlineHome
+                  className="bg-[#8b98a5] p-2 rounded-full text-gray-800"
+                  size={36}
+                />
+                <span>Permanent: {personalData.address}</span>
+              </span>
+            </p>
+
           </div>
           <div className="mt-8 lg:mt-16 flex items-center gap-5 lg:gap-10">
             <Link target="_blank" href={personalData.github}>
