@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import { TbMailForward } from "react-icons/tb";
 import { toast } from "react-toastify";
+import {sendEmail} from '@/api/contact/route';
 
 function ContactForm() {
   const [error, setError] = useState({ email: false, required: false });
@@ -22,36 +23,39 @@ function ContactForm() {
   };
 
   const handleSendMail = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!userInput.email || !userInput.message || !userInput.name) {
-      setError({ ...error, required: true });
-      return;
-    } else if (error.email) {
-      return;
-    } else {
-      setError({ ...error, required: false });
-    };
+  if (!userInput.email || !userInput.message || !userInput.name) {
+    setError({ ...error, required: true });
+    return;
+  } else if (error.email) {
+    return;
+  } else {
+    setError({ ...error, required: false });
+  }
 
-    try {
-      setIsLoading(true);
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`,
-        userInput
-      );
+  try {
+    setIsLoading(true);
+    
+    // Call sendEmail directly with the userInput
+    const emailSuccess = await sendEmail(userInput, "Portfolio Contact Form");
 
+    if (emailSuccess) {
       toast.success("Message sent successfully!");
       setUserInput({
         name: "",
         email: "",
         message: "",
       });
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
-    } finally {
-      setIsLoading(false);
-    };
-  };
+    } else {
+      toast.error("Failed to send message");
+    }
+  } catch (error) {
+    toast.error(error?.message || "Failed to send message");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div>
